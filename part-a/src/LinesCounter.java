@@ -33,8 +33,8 @@ public class LinesCounter {
 
         String[] fileNames = new String[n];
 
-        for (int i = 1; i <= fileNames.length; i++) {
-            fileNames[i] = DIST_PATH + "/" + FILES_PREFIX + i;
+        for (int i = 0; i < fileNames.length; i++) {
+            fileNames[i] = DIST_PATH + "/" + FILES_PREFIX + (i + 1);
 
             // create the file
             try {

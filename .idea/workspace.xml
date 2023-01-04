@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2ff31502-4ee1-4fdc-a455-dc6f511f2ce9" name="Changes" comment="update .idea">
-      <change afterPath="$PROJECT_DIR$/part-a/src/LinesCounter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="2ff31502-4ee1-4fdc-a455-dc6f511f2ce9" name="Changes" comment="create files">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/part-a/src/LinesCounter.java" beforeDir="false" afterPath="$PROJECT_DIR$/part-a/src/LinesCounter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/part-a/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/part-a/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,17 +38,23 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "jdk.selected.JAVA_MODULE": "19",
-    "last_opened_file_path": "/home/omer/projects/oop-assignment-3",
+    "last_opened_file_path": "/home/omer/projects/oop-assignment-3/.idea",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/.idea" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Part A">
     <configuration name="Part A" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -118,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672863867038</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="create files">
+      <created>1672866822305</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1672866822305</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -136,6 +149,7 @@
     <MESSAGE value="create part-a and part-b" />
     <MESSAGE value="add editorconfig" />
     <MESSAGE value="update .idea" />
-    <option name="LAST_COMMIT_MESSAGE" value="update .idea" />
+    <MESSAGE value="create files" />
+    <option name="LAST_COMMIT_MESSAGE" value="create files" />
   </component>
 </project>
