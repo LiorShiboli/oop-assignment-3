@@ -57,7 +57,7 @@ public class LinesCounter {
         return fileNames;
     }
 
-    private static int getCountOfLinesInFile(String fileName) throws IOException {
+    public static int getCountOfLinesInFile(String fileName) throws IOException {
         int count = 0;
 
         FileInputStream stream = new FileInputStream(fileName);
@@ -96,8 +96,25 @@ public class LinesCounter {
     }
 
     public static int getNumOfLinesThreads(String[] fileNames) {
-        // TODO
-        return 0;
+
+        Thread[] threads = new Thread[fileNames.length];
+
+        FileThreadLinesCounter.resetCounter();
+
+        for (int i = 0; i < fileNames.length; i++) {
+            threads[i] = new Thread(new FileThreadLinesCounter(fileNames[i]));
+            threads[i].start();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                return -1;
+            }
+        }
+
+        return FileThreadLinesCounter.getCounter();
     }
 
     public static int getNumOfLinesThreadPool(String[] fileNames) {
