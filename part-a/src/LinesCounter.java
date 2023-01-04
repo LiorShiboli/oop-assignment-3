@@ -1,5 +1,8 @@
 import java.io.*;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class LinesCounter {
     private static final String DIST_PATH = "dist";
@@ -57,8 +60,8 @@ public class LinesCounter {
         return fileNames;
     }
 
-    public static int getCountOfLinesInFile(String fileName) throws IOException {
-        int count = 0;
+    public static long getCountOfLinesInFile(String fileName) throws IOException {
+        long count = 0;
 
         FileInputStream stream = new FileInputStream(fileName);
 
@@ -80,9 +83,9 @@ public class LinesCounter {
         return count;
     }
 
-    public static int getNumOfLines(String[] fileNames) {
+    public static long getNumOfLines(String[] fileNames) {
 
-        int counter = 0;
+        long counter = 0;
 
         for (String fileName: fileNames) {
             try {
@@ -95,7 +98,7 @@ public class LinesCounter {
         return counter;
     }
 
-    public static int getNumOfLinesThreads(String[] fileNames) {
+    public static long getNumOfLinesThreads(String[] fileNames) {
 
         Thread[] threads = new Thread[fileNames.length];
 
@@ -117,8 +120,33 @@ public class LinesCounter {
         return FileThreadLinesCounter.getCounter();
     }
 
-    public static int getNumOfLinesThreadPool(String[] fileNames) {
-        // TODO
-        return 0;
+    public static long getNumOfLinesThreadPool(String[] fileNames) {
+
+        AtomicLong counter = new AtomicLong(0);
+
+        ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(fileNames.length);
+
+        for (String fileName: fileNames) {
+            executor.submit(() -> {
+                long linesInFile = 0;
+                try {
+                    linesInFile = getCountOfLinesInFile(fileName);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                counter.getAndAdd(linesInFile);
+            });
+        }
+
+        while (executor.getActiveCount() > 0) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return counter.get();
     }
 }

@@ -3,17 +3,17 @@ import java.io.IOException;
 class FileThreadLinesCounter implements Runnable {
 
     // static
-    private static Integer counter = 0;
+    private static long counter = 0;
 
     public static void resetCounter() {
         counter = 0;
     }
 
-    public static Integer getCounter() {
+    public static long getCounter() {
         return counter;
     }
 
-    private static synchronized void increaseCounter(int add) {
+    private static synchronized void increaseCounter(long add) {
         counter += add;
     }
 
@@ -26,7 +26,7 @@ class FileThreadLinesCounter implements Runnable {
 
     @Override
     public void run() {
-        int countOfLines = 0;
+        long countOfLines = 0;
 
         try {
             countOfLines = LinesCounter.getCountOfLinesInFile(fileName);

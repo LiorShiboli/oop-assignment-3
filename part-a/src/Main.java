@@ -21,7 +21,7 @@ public class Main {
 
         // count the lines
         long startTime = System.currentTimeMillis();
-        int linesCount = LinesCounter.getNumOfLines(fileNames);
+        long linesCount = LinesCounter.getNumOfLines(fileNames);
         long endTime = System.currentTimeMillis();
 
         System.out.println("The " + n + " files have " + linesCount + " lines.");
