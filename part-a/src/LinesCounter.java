@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 
 public class LinesCounter {
@@ -59,9 +57,42 @@ public class LinesCounter {
         return fileNames;
     }
 
+    private static int getCountOfLinesInFile(String fileName) throws IOException {
+        int count = 0;
+
+        FileInputStream stream = new FileInputStream(fileName);
+
+        byte[] chunkBuffer = new byte[8192];
+        int chunkSize;
+
+        do {
+            chunkSize = stream.read(chunkBuffer);
+
+            for (int i = 0; i < chunkSize; i++) {
+                if (chunkBuffer[i] == '\n') {
+                    count++;
+                }
+            }
+        } while (chunkSize > 0);
+
+        stream.close();
+
+        return count;
+    }
+
     public static int getNumOfLines(String[] fileNames) {
-        // TODO
-        return 0;
+
+        int counter = 0;
+
+        for (String fileName: fileNames) {
+            try {
+                counter += getCountOfLinesInFile(fileName);
+            } catch (IOException e) {
+                return -1;
+            }
+        }
+
+        return counter;
     }
 
     public static int getNumOfLinesThreads(String[] fileNames) {

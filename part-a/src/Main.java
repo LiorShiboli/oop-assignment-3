@@ -26,18 +26,18 @@ public class Main {
 
         System.out.println("The " + n + " files have " + linesCount + " lines.");
 
-        System.out.println("getNumOfLines take " + (endTime-startTime) + " [ms]");
+        System.out.println("getNumOfLines take " + (endTime-startTime) + " [ms] (" + linesCount + " files)");
 
         startTime = System.currentTimeMillis();
         linesCount = LinesCounter.getNumOfLinesThreads(fileNames);
         endTime = System.currentTimeMillis();
 
-        System.out.println("getNumOfLinesThreads take " + (endTime-startTime) + " [ms]");
+        System.out.println("getNumOfLinesThreads take " + (endTime-startTime) + " [ms] (" + linesCount + " files)");
 
         startTime = System.currentTimeMillis();
         linesCount = LinesCounter.getNumOfLinesThreadPool(fileNames);
         endTime = System.currentTimeMillis();
 
-        System.out.println("getNumOfLinesThreadPool take " + (endTime-startTime) + " [ms]");
+        System.out.println("getNumOfLinesThreadPool take " + (endTime-startTime) + " [ms] (" + linesCount + " files)");
     }
 }
