@@ -118,7 +118,7 @@ public class Ex2_1 {
         }
         for(Future<Integer> future : list){
             try {
-
+                lineCount+= future.get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
