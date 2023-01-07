@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.Files;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -16,9 +17,8 @@ public class LinesCounter {
         File dist = new File(DIST_PATH);
         if (dist.exists()) {
             File[] files = dist.listFiles();
-            if (files != null)
-            {
-                for (File file: files) {
+            if (files != null) {
+                for (File file : files) {
                     file.delete();
                 }
             }
@@ -34,27 +34,33 @@ public class LinesCounter {
 
         String[] fileNames = new String[n];
 
-        for (int i = 0; i < fileNames.length; i++) {
-            fileNames[i] = DIST_PATH + "/" + FILES_PREFIX + (i + 1);
+        try {
+            // create the first file
+            fileNames[0] = DIST_PATH + "/" + FILES_PREFIX + (1);
+            FileWriter fileWriter = new FileWriter(fileNames[0]);
 
-            // create the file
-            try {
-                FileWriter file = new FileWriter(fileNames[i]);;
+            int linesCount = random.nextInt(bound);
 
-                int linesCount = random.nextInt(bound);
-
-                for (int j = 0; j < linesCount; j++) {
-                    int lineLength = random.nextInt(MAX_LINE_LENGTH - MIN_LINE_LENGTH + 1) + MIN_LINE_LENGTH;
-                    for (int k = 0; k < lineLength; k++) {
-                        file.append("*");
-                    }
-                    file.append("\n");
+            for (int j = 0; j < linesCount; j++) {
+                int lineLength = random.nextInt(MAX_LINE_LENGTH - MIN_LINE_LENGTH + 1) + MIN_LINE_LENGTH;
+                for (int k = 0; k < lineLength; k++) {
+                    fileWriter.append("*");
                 }
-
-                file.close();
-            } catch (IOException e) {
-                return null;
+                fileWriter.append("\n");
             }
+
+            fileWriter.close();
+
+            File file = new File(fileNames[0]);
+
+            for (int i = 1; i < fileNames.length; i++) {
+                fileNames[i] = DIST_PATH + "/" + FILES_PREFIX + (i + 1);
+
+                Files.copy(file.toPath(), new File(fileNames[i]).toPath());
+            }
+
+        } catch (IOException e) {
+            return null;
         }
 
         return fileNames;
@@ -87,7 +93,17 @@ public class LinesCounter {
 
         long counter = 0;
 
+        int i = 0;
+
         for (String fileName: fileNames) {
+
+            if (i == 10000) {
+                i = 0;
+                System.out.println("print me");
+            } else {
+                i++;
+            }
+
             try {
                 counter += getCountOfLinesInFile(fileName);
             } catch (IOException e) {

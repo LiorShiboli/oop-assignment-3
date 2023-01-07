@@ -17,6 +17,11 @@ public class Main {
 
         String[] fileNames = LinesCounter.createTextFiles(n, seed, bound);
 
+        if (fileNames == null) {
+            System.out.println("Error: Cannot create the files.\n");
+            return;
+        }
+
         System.out.println("The files created.\n");
 
         // count the lines
@@ -26,18 +31,18 @@ public class Main {
 
         System.out.println("The " + n + " files have " + linesCount + " lines.");
 
-        System.out.println("getNumOfLines take " + (endTime-startTime) + " [ms] (" + linesCount + " files)");
+        System.out.println("getNumOfLines take " + (endTime - startTime) + " [ms] (" + linesCount + " files)");
 
         startTime = System.currentTimeMillis();
         linesCount = LinesCounter.getNumOfLinesThreads(fileNames);
         endTime = System.currentTimeMillis();
 
-        System.out.println("getNumOfLinesThreads take " + (endTime-startTime) + " [ms] (" + linesCount + " files)");
+        System.out.println("getNumOfLinesThreads take " + (endTime - startTime) + " [ms] (" + linesCount + " files)");
 
         startTime = System.currentTimeMillis();
         linesCount = LinesCounter.getNumOfLinesThreadPool(fileNames);
         endTime = System.currentTimeMillis();
 
-        System.out.println("getNumOfLinesThreadPool take " + (endTime-startTime) + " [ms] (" + linesCount + " files)");
+        System.out.println("getNumOfLinesThreadPool take " + (endTime - startTime) + " [ms] (" + linesCount + " files)");
     }
 }
