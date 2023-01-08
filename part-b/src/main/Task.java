@@ -1,8 +1,9 @@
 package main;
 
+import java.util.Comparator;
 import java.util.concurrent.*;
 
-public class Task<T> {
+public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     /**
      * Create new Task from callable
      *
@@ -27,9 +28,9 @@ public class Task<T> {
     }
 
     /**
-     * A callable to run432222222
+     * A callable to run
      */
-    Callable<T> callable;
+    private final Callable<T> callable;
 
     /**
      * The task type
@@ -37,9 +38,9 @@ public class Task<T> {
     private final int priority;
 
     /**
-     * future from the Executor
+     * the Executor of the task
      */
-    Future<T> future;
+    private CustomExecutor executor;
 
     /**
      * Create new Task from callable
@@ -59,7 +60,7 @@ public class Task<T> {
     public Task(Callable<T> callable, TaskType taskType) {
         this.callable = callable;
         this.priority = taskType.getPriority();
-        this.future = null;
+        this.executor = null;
     }
 
     /**
@@ -71,11 +72,7 @@ public class Task<T> {
     public Task(Callable<T> callable, int priority) {
         this.callable = callable;
         this.priority = priority;
-        this.future = null;
-    }
-
-    public Callable<T> getCallable() {
-        return callable;
+        this.executor = null;
     }
 
     public int getPriority() {
@@ -87,84 +84,34 @@ public class Task<T> {
      * @return true if the task in an Executor
      */
     public boolean inExecutor() {
-        return this.future != null;
-    }
-
-
-
-    /**
-     * Returns {@code true} if this task completed.
-     * Completion may be due to normal termination, an exception, or
-     * cancellation -- in all of these cases, this method will return
-     * {@code true}.
-     *
-     * @see java.util.concurrent.Future#isDone()
-     * @return {@code true} if this task completed
-     */
-    public boolean isDone() {
-        if (this.future == null) {
-            return false;
-        }
-
-        return this.future.isDone();
+        return this.executor != null;
     }
 
     /**
-     * Waits if necessary for the computation to complete, and then
-     * retrieves its result.
+     * Set Executor for the task. Used by the CustomExecutor
      *
-     * @return the computed result
-     * @throws CancellationException if the computation was cancelled
-     * @throws ExecutionException if the computation threw an
-     * exception
-     * @throws InterruptedException if the current thread was interrupted
-     * while waiting
-     * @throws RuntimeException if the task not in an Executor
-     * @see java.util.concurrent.Future#get()
+     * @param executor a CustomExecutor
+     * @throws RuntimeException if already has CustomExecutor
      */
-    public T get() throws InterruptedException, ExecutionException, RuntimeException {
-        if (!inExecutor()) {
-            throw new RuntimeException("Task not in an Executor!");
-        }
-
-        return this.future.get();
-    }
-
-    /**
-     * Waits if necessary for at most the given time for the computation
-     * to complete, and then retrieves its result, if available.
-     *
-     * @param timeout the maximum time to wait
-     * @param unit the time unit of the timeout argument
-     * @return the computed result
-     * @throws CancellationException if the computation was cancelled
-     * @throws ExecutionException if the computation threw an
-     * exception
-     * @throws InterruptedException if the current thread was interrupted
-     * while waiting
-     * @throws TimeoutException if the wait timed out
-     * @throws RuntimeException if the task not in an Executor
-     * @see java.util.concurrent.Future#get(long, TimeUnit)
-     */
-    public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException, RuntimeException {
+    public void setExecutor(CustomExecutor executor) {
         if (inExecutor()) {
-            throw new RuntimeException("Task already in a Executor!");
+            throw new RuntimeException("Is already in executor");
         }
 
-        return this.future.get(timeout, unit);
+        this.executor = executor;
     }
 
-    /**
-     * init a future from Executor, used by the {@link CustomExecutor}
-     *
-     * @param future the future
-     * @throws RuntimeException if the task not in an Executor
-     */
-    public void setFuture(Future<T> future) {
+    @Override
+    public T call() throws Exception {
         if (inExecutor()) {
-            throw new RuntimeException("Task already in a Executor!");
+            this.executor.doTaskCompleted(this);
         }
 
-        this.future = future;
+        return callable.call();
+    }
+
+    @Override
+    public int compareTo(Task other) {
+        return -1 * Integer.compare(this.getPriority(), other.getPriority());
     }
 }

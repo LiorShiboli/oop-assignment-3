@@ -11,10 +11,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
@@ -62,11 +59,11 @@ public class CustomExecutorTest {
             return fileExists;
         }, TaskType.IO);
 
-        executor.submit(counterTask);
-        executor.submit(fileExistsTask);
+        var counterFuture = executor.submit(counterTask);
+        var fileExistsFuture = executor.submit(fileExistsTask);
 
-        assertEquals((int)counterTask.get(), 1000);
-        assertEquals(fileExistsTask.get(1, TimeUnit.SECONDS), false);
+        assertEquals((int)counterFuture.get(1, TimeUnit.SECONDS), 1000);
+        assertEquals(fileExistsFuture.get(1, TimeUnit.SECONDS), false);
 
         assertEquals(executor.getCurrentMax(), 2);
         executor.gracefullyTerminate();
@@ -74,12 +71,14 @@ public class CustomExecutorTest {
 
     @Test
     public void multiExecutorsTest() throws ExecutionException, InterruptedException, TimeoutException {
+        final int N = 1000;
+
         CustomExecutor executor1 = new CustomExecutor();
         CustomExecutor executor2 = new CustomExecutor();
 
-        List<Task<Integer>> tasks = new ArrayList<>();
+        List<Future<Integer>> tasks = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < N; i++) {
             tasks.add(executor1.submit(() -> {
                 Thread.sleep(25);
                 return 1;
@@ -96,7 +95,7 @@ public class CustomExecutorTest {
             }, TaskType.COMPUTATIONAL));
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < N; i++) {
             assertEquals((int)tasks.get(i * 3).get(26, TimeUnit.MILLISECONDS), 1);
             assertEquals((int)tasks.get(i * 3 + 1).get( 51, TimeUnit.MILLISECONDS), 2);
             assertEquals((int)tasks.get(i * 3 + 2).get( 26, TimeUnit.MILLISECONDS), 3);
@@ -177,7 +176,7 @@ public class CustomExecutorTest {
 
         var sumTask = customExecutor.submit(task);
 
-        final int sum;
+        int sum;
 
         try {
             sum = sumTask.get(1, TimeUnit.MILLISECONDS);
