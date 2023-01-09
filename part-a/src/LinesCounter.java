@@ -3,6 +3,7 @@ import java.nio.file.Files;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class LinesCounter {
@@ -155,13 +156,10 @@ public class LinesCounter {
             });
         }
 
-        while (executor.getActiveCount() > 0) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        executor.shutdown();
+        try {
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+        } catch (InterruptedException e) { }
 
         return counter.get();
     }
