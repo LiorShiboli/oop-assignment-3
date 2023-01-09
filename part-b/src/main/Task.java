@@ -1,4 +1,4 @@
-package main;
+
 
 import java.util.Comparator;
 import java.util.concurrent.*;
@@ -88,10 +88,10 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     }
 
     /**
-     * Set Executor for the task. Used by the CustomExecutor
+     * Set Executor for the task. Used by the CustomExecutor.java
      *
-     * @param executor a CustomExecutor
-     * @throws RuntimeException if already has CustomExecutor
+     * @param executor a CustomExecutor.java
+     * @throws RuntimeException if already has CustomExecutor.java
      */
     public void setExecutor(CustomExecutor executor) {
         if (inExecutor()) {

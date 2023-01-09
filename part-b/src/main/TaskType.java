@@ -1,4 +1,4 @@
-package main;
+
 
 public enum TaskType {
     COMPUTATIONAL(1) {
