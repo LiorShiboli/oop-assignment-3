@@ -1,38 +1,40 @@
-
-
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+package main;
 
 public class CustomExecutor {
     public CustomExecutor() {
-
+        // TODO
     }
 
     public int getCurrentMax() {
-        return 0;
+        // TODO
     }
 
     public <T> Future<T> submit(Task<T> task) {
-        return null;
+        // TODO
     }
 
     public <T> Future<T> submit(Callable<T> callable) {
-        return null;
+        // TODO
     }
 
     public <T> Future<T> submit(Callable<T> callable, TaskType taskType) {
-        return null;
+        // TODO
     }
 
     public <T> Future<T> submit(Callable<T> callable, int priority) {
-        return null;
+        // TODO
     }
 
     public void gracefullyTerminate() {
         // TODO
     }
 
-    public <T> void doTaskCompleted(Task<T> task) {
-        // TODO: update max priority
+    /**
+     * event when task completed
+     *
+     * @param task that task that complete
+     */
+    public void doTaskCompleted(Task<?> task) {
+        // TODO
     }
 }
