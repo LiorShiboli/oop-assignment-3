@@ -139,7 +139,7 @@ public class CustomExecutorTest {
                 return "Comp-2";
             }, TaskType.COMPUTATIONAL);
 
-            assertEquals(1, executor2.getCurrentMax());
+            assertEquals(0, executor2.getCurrentMax());
 
             assertEquals("Comp-1", taskComp1.get(100, TimeUnit.MILLISECONDS));
             assertEquals("Comp-2", taskComp2.get(100, TimeUnit.MILLISECONDS));

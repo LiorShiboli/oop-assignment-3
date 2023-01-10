@@ -107,13 +107,10 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
 
     @Override
     public T call() throws Exception {
-
-        T returnValue =  callable.call();
-
         if (inExecutor()) {
             this.executor.doTaskCompleted(this);
         }
 
-        return returnValue;
+        return callable.call();
     }
 }
