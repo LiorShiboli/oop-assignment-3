@@ -1,6 +1,5 @@
+package main;
 
-
-import java.util.Comparator;
 import java.util.concurrent.*;
 
 public class Task<T> implements Callable<T>, Comparable<Task<?>> {
@@ -28,17 +27,17 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     }
 
     /**
-     * A callable to run
+     * A callable to compute
      */
     private final Callable<T> callable;
 
     /**
-     * The task type
+     * The priority of the task
      */
     private final int priority;
 
     /**
-     * the Executor of the task
+     * the CustomExecutor of the task
      */
     private CustomExecutor executor;
 
@@ -88,10 +87,10 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     }
 
     /**
-     * Set Executor for the task. Used by the CustomExecutor.java
+     * Set Executor for the task. Used by the CustomExecutor
      *
-     * @param executor a CustomExecutor.java
-     * @throws RuntimeException if already has CustomExecutor.java
+     * @param executor a CustomExecutor
+     * @throws RuntimeException if already has CustomExecutor
      */
     public void setExecutor(CustomExecutor executor) {
         if (inExecutor()) {
@@ -102,16 +101,19 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     }
 
     @Override
+    public int compareTo(Task other) {
+        return Integer.compare(this.getPriority(), other.getPriority());
+    }
+
+    @Override
     public T call() throws Exception {
+
+        T returnValue =  callable.call();
+
         if (inExecutor()) {
             this.executor.doTaskCompleted(this);
         }
 
-        return callable.call();
-    }
-
-    @Override
-    public int compareTo(Task other) {
-        return -1 * Integer.compare(this.getPriority(), other.getPriority());
+        return returnValue;
     }
 }

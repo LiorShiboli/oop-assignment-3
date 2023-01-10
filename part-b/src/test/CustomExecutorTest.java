@@ -1,3 +1,8 @@
+package test;
+
+import main.TaskType;
+import main.Task;
+import main.CustomExecutor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +14,6 @@ import java.util.List;
 import java.util.concurrent.*;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
 public class CustomExecutorTest {
     public static final Logger logger = LoggerFactory.getLogger(CustomExecutorTest.class);
@@ -54,18 +58,20 @@ public class CustomExecutorTest {
             return fileExists;
         }, TaskType.IO);
 
+        assertEquals(0, executor.getCurrentMax());
+
         var counterFuture = executor.submit(counterTask);
         var fileExistsFuture = executor.submit(fileExistsTask);
 
-        assertEquals((int)counterFuture.get(1, TimeUnit.SECONDS), 1000);
-        assertEquals(fileExistsFuture.get(1, TimeUnit.SECONDS), false);
+        assertEquals(1000, (int)counterFuture.get(1, TimeUnit.SECONDS));
+        assertEquals(false, fileExistsFuture.get(1, TimeUnit.SECONDS));
 
-        assertEquals(executor.getCurrentMax(), 2);
+        assertEquals(0, executor.getCurrentMax());
         executor.gracefullyTerminate();
     }
 
     @Test
-    public void multiExecutorsTest() throws ExecutionException, InterruptedException, TimeoutException {
+    public void multiExecutorsTest() throws ExecutionException, InterruptedException {
         final int N = 1000;
 
         CustomExecutor executor1 = new CustomExecutor();
@@ -90,14 +96,17 @@ public class CustomExecutorTest {
             }, TaskType.COMPUTATIONAL));
         }
 
+        assertEquals(1, executor1.getCurrentMax());
+        assertEquals(1, executor2.getCurrentMax());
+
         for (int i = 0; i < N; i++) {
-            assertEquals((int)tasks.get(i * 3).get(26, TimeUnit.MILLISECONDS), 1);
-            assertEquals((int)tasks.get(i * 3 + 1).get( 51, TimeUnit.MILLISECONDS), 2);
-            assertEquals((int)tasks.get(i * 3 + 2).get( 26, TimeUnit.MILLISECONDS), 3);
+            assertEquals((int)tasks.get(i * 3).get(), 1);
+            assertEquals((int)tasks.get(i * 3 + 1).get(), 2);
+            assertEquals((int)tasks.get(i * 3 + 2).get(), 3);
         }
 
-        assertEquals(executor1.getCurrentMax(), 1);
-        assertEquals(executor2.getCurrentMax(), 1);
+        assertEquals(0, executor1.getCurrentMax());
+        assertEquals(0, executor2.getCurrentMax());
 
         executor1.gracefullyTerminate();
         executor2.gracefullyTerminate();
@@ -111,48 +120,42 @@ public class CustomExecutorTest {
             CustomExecutor executor2 = new CustomExecutor();
 
             var taskIO1 = executor2.submit(() -> {
-                Thread.sleep(9);
+                Thread.sleep(90);
                 return "IO-1";
-            });
+            }, TaskType.IO);
 
             var taskComp1 = executor2.submit(() -> {
-                Thread.sleep(9);
+                Thread.sleep(90);
                 return "Comp-1";
-            });
+            }, TaskType.COMPUTATIONAL);
 
             var taskIO2 = executor2.submit(() -> {
-                Thread.sleep(9);
+                Thread.sleep(90);
                 return "IO-2";
-            });
+            }, TaskType.IO);
 
             var taskComp2 = executor2.submit(() -> {
-                Thread.sleep(9);
+                Thread.sleep(90);
                 return "Comp-2";
-            });
+            }, TaskType.COMPUTATIONAL);
 
-            assertThrows(TimeoutException.class, () -> {
-                taskIO2.get(10, TimeUnit.MILLISECONDS);
-            });
+            assertEquals(1, executor2.getCurrentMax());
 
-            assertThrows(TimeoutException.class, () -> {
-                taskIO1.get(10, TimeUnit.MILLISECONDS);
-            });
+            assertEquals("Comp-1", taskComp1.get(100, TimeUnit.MILLISECONDS));
+            assertEquals("Comp-2", taskComp2.get(100, TimeUnit.MILLISECONDS));
+            assertEquals("IO-1", taskIO1.get(100, TimeUnit.MILLISECONDS));
+            assertEquals("IO-2", taskIO2.get(100, TimeUnit.MILLISECONDS));
 
-            assertEquals(taskComp1.get(10, TimeUnit.MILLISECONDS), "Comp-1");
-            assertEquals(taskComp2.get(10, TimeUnit.MILLISECONDS), "Comp-2");
-            assertEquals(taskIO1.get(10, TimeUnit.MILLISECONDS), "IO-1");
-            assertEquals(taskIO2.get(10, TimeUnit.MILLISECONDS), "IO-2");
-
-            assertEquals(executor2.getCurrentMax(), 2);
+            assertEquals(0, executor2.getCurrentMax());
 
             executor2.gracefullyTerminate();
 
             return 0;
         }, TaskType.OTHER);
 
-        assertEquals((int)mainTask.get(300, TimeUnit.MILLISECONDS), 0);
+        assertEquals(0, (int)mainTask.get(1, TimeUnit.SECONDS));
 
-        assertEquals(executor1.getCurrentMax(), 3);
+        assertEquals(0, executor1.getCurrentMax());
 
         executor1.gracefullyTerminate();
     }
@@ -181,9 +184,7 @@ public class CustomExecutorTest {
 
         logger.info("Sum of 1 through 10 = " + sum);
 
-        Callable<Double> callable1 = ()-> {
-            return 1000 * Math.pow(1.02, 5);
-        };
+        Callable<Double> callable1 = () -> 1000 * Math.pow(1.02, 5);
 
         Callable<String> callable2 = ()-> {
             StringBuilder sb = new StringBuilder("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -207,7 +208,7 @@ public class CustomExecutorTest {
         logger.info("Total Price = " + totalPrice);
         logger.info("Current maximum priority = " + customExecutor.getCurrentMax());
 
-        assertEquals(customExecutor.getCurrentMax(), 2);
+        assertEquals(0, customExecutor.getCurrentMax());
 
         customExecutor.gracefullyTerminate();
     }

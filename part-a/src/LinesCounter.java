@@ -6,6 +6,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Class that provides 3 ways to
+ * count number of lines in number of files
+ */
 public class LinesCounter {
     private static final String DIST_PATH = "dist";
     private static final String FILES_PREFIX = "file_";
@@ -13,7 +17,9 @@ public class LinesCounter {
     private static final int MIN_LINE_LENGTH = 10;
     private static final int MAX_LINE_LENGTH = 100;
 
-
+    /**
+     * Delete if exists and create the folder for the files
+     */
     private static void recreateDist() {
         File dist = new File(DIST_PATH);
         if (dist.exists()) {
@@ -28,6 +34,14 @@ public class LinesCounter {
         }
     }
 
+    /**
+     * Create n files
+     *
+     * @param n the count of the files
+     * @param seed for random
+     * @param bound max lines in single file
+     * @return list of the names (path) of the files
+     */
     public static String[] createTextFiles(int n, int seed, int bound) {
         Random random = new Random(seed);
 
@@ -67,6 +81,12 @@ public class LinesCounter {
         return fileNames;
     }
 
+    /**
+     * Counter the count of lines in single file
+     *
+     * @param fileName file path
+     * @return count lines
+     */
     public static long getCountOfLinesInFile(String fileName) throws IOException {
         long count = 0;
 
@@ -90,6 +110,12 @@ public class LinesCounter {
         return count;
     }
 
+    /**
+     * Counter the count of lines in files
+     *
+     * @param fileNames list of files
+     * @return count lines
+     */
     public static long getNumOfLines(String[] fileNames) {
 
         long counter = 0;
@@ -115,6 +141,12 @@ public class LinesCounter {
         return counter;
     }
 
+    /**
+     * Counter the count of lines in files with Threads
+     *
+     * @param fileNames list of files
+     * @return count lines
+     */
     public static long getNumOfLinesThreads(String[] fileNames) {
 
         Thread[] threads = new Thread[fileNames.length];
@@ -137,6 +169,12 @@ public class LinesCounter {
         return FileThreadLinesCounter.getCounter();
     }
 
+    /**
+     * Counter the count of lines in files with ThreadPoolExecutor
+     *
+     * @param fileNames list of files
+     * @return count lines
+     */
     public static long getNumOfLinesThreadPool(String[] fileNames) {
 
         AtomicLong counter = new AtomicLong(0);

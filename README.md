@@ -7,6 +7,10 @@ This is assignment project for the university
 - IntelliJ IDEA
 - java 19
 
+## Get Started
+
+Open
+
 ## Authors
 
 - Lior Shiboli

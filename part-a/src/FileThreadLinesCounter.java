@@ -1,8 +1,14 @@
 import java.io.IOException;
 
+/**
+ * Class for counting lines in files
+ */
 class FileThreadLinesCounter implements Runnable {
 
     // static
+    /**
+     * Main counter of all the threads
+     */
     private static long counter = 0;
 
     public static void resetCounter() {
@@ -13,6 +19,11 @@ class FileThreadLinesCounter implements Runnable {
         return counter;
     }
 
+    /**
+     * increase the counter
+     *
+     * @param add count
+     */
     private static synchronized void increaseCounter(long add) {
         counter += add;
     }
