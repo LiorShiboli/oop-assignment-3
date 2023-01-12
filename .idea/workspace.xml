@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="16b1e958-6514-44c3-93c4-dd1fcc7b37e0" name="Changes" comment="clean and docs all">
-      <change afterPath="$PROJECT_DIR$/part-b/part-b.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part-b/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/part-b/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part-b/src/main/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/part-b/src/main/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/part-b/src/test/CustomExecutorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/part-b/src/test/CustomExecutorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,18 +33,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/home/omer/projects/oop-assignment-3",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "copyright"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/lior1/homework/oop/oop-assignment-3/part-b&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;copyright&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="TestNG.CustomExecutorTest">
     <configuration name="Part A" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
@@ -107,13 +103,11 @@
     <list>
       <item itemvalue="Application.Part A" />
       <item itemvalue="Application.Part B" />
-      <item itemvalue="Makefile Target.clean" />
       <item itemvalue="TestNG.CustomExecutorTest" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="TestNG.CustomExecutorTest" />
-        <item itemvalue="Makefile Target.clean" />
         <item itemvalue="Application.Part B" />
         <item itemvalue="Application.Part A" />
       </list>
@@ -127,6 +121,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1673273077119</updated>
+      <workItem from="1673469611856" duration="31000" />
+      <workItem from="1673470109016" duration="67000" />
     </task>
     <task id="LOCAL-00001" summary="its working">
       <created>1673282603615</created>
@@ -172,6 +168,9 @@
     </task>
     <option name="localTasksCounter" value="7" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

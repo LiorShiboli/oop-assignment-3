@@ -1,43 +1,53 @@
 package main;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
+import java.util.Comparator;
+import java.util.concurrent.*;
 
-public class CustomExecutor {
+public class CustomExecutor extends ThreadPoolExecutor{
+    private int CurrentMax;
+
     public CustomExecutor() {
-        // TODO
+        super(
+            Runtime.getRuntime().availableProcessors() /2, Runtime.getRuntime().availableProcessors() -1,
+            300,TimeUnit.MILLISECONDS,new PriorityBlockingQueue());
     }
 
     public int getCurrentMax() {
-        // TODO
+        return CurrentMax;
     }
 
     public <T> Future<T> submit(Task<T> task) {
-        // TODO
+        //update currentMax
+        if (task.getPriority()>this.CurrentMax){
+            this.CurrentMax = task.getPriority();
+        }
+        //submit the task through CustomFutureTask
+        CustomFutureTask ftask = new CustomFutureTask(task);
+        this.execute(ftask);
+        return ftask;
     }
-
+@Override
     public <T> Future<T> submit(Callable<T> callable) {
-        // TODO
+        return this.submit(Task.createTask(callable));
     }
 
     public <T> Future<T> submit(Callable<T> callable, TaskType taskType) {
-        // TODO
+        return this.submit(Task.createTask(callable,taskType));
     }
 
     public <T> Future<T> submit(Callable<T> callable, int priority) {
-        // TODO
+        return this.submit(Task.createTask(callable,priority));
     }
 
     public void gracefullyTerminate() {
-        // TODO
+        this.shutdown();
     }
 
-    /**
-     * event when task completed
-     *
-     * @param task that task that complete
-     */
-    public void doTaskCompleted(Task<?> task) {
-        // TODO
+    @Override
+    protected void beforeExecute(Thread t, Runnable r) {
+        super.beforeExecute(t, r);
+        if (this.getQueue().isEmpty()){
+            this.CurrentMax = 0;
+        }
     }
 }

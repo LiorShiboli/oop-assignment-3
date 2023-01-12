@@ -2,17 +2,17 @@ package main;
 
 import java.util.concurrent.FutureTask;
 
-    public class CustomFutureTask<T> implements Runnable {
+    public class CustomFutureTask<T> extends FutureTask implements Comparable<CustomFutureTask<T>> {
     public final Task<T> task;
-    public final FutureTask<T> futureTask;
 
-    public CustomFutureTask(Task<T> task, FutureTask<T> futureTask) {
+
+    public CustomFutureTask(Task<T> task) {
+        super(task);
         this.task = task;
-        this.futureTask = futureTask;
     }
 
-    @Override
-    public void run() {
-        this.futureTask.run();
+        @Override
+        public int compareTo(CustomFutureTask<T> o) {
+            return this.task.compareTo(o.task);
+        }
     }
-}

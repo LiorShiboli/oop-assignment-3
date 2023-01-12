@@ -25,6 +25,9 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     static public <T> Task<T> createTask(Callable<T> callable, TaskType taskType) {
         return new Task<>(callable, taskType);
     }
+    static public <T> Task<T> createTask(Callable<T> callable, int priority) {
+        return new Task<>(callable, priority);
+    }
 
     /**
      * A callable to compute
@@ -107,10 +110,6 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
 
     @Override
     public T call() throws Exception {
-        if (inExecutor()) {
-            this.executor.doTaskCompleted(this);
-        }
-
         return callable.call();
     }
 }
