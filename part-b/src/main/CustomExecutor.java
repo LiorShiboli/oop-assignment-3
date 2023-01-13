@@ -1,15 +1,13 @@
 package main;
 
-import java.util.Comparator;
 import java.util.concurrent.*;
 
 public class CustomExecutor extends ThreadPoolExecutor{
     private int CurrentMax;
 
     public CustomExecutor() {
-        super(
-            Runtime.getRuntime().availableProcessors() /2, Runtime.getRuntime().availableProcessors() -1,
-            300,TimeUnit.MILLISECONDS,new PriorityBlockingQueue<Runnable>(11,CustomFutureTask.COMP));
+        super(Runtime.getRuntime().availableProcessors() / 2, Runtime.getRuntime().availableProcessors() -1,
+            300, TimeUnit.MILLISECONDS, new PriorityBlockingQueue<>(11, CustomFutureTask.getComparator()));
     }
 
     public int getCurrentMax() {
@@ -17,14 +15,16 @@ public class CustomExecutor extends ThreadPoolExecutor{
     }
 
     public <T> Future<T> submit(Task<T> task) {
-        //update currentMax
-        if (task.getPriority()>this.CurrentMax){
+        // update currentMax
+        if (task.getPriority() > this.CurrentMax){
             this.CurrentMax = task.getPriority();
         }
-        //submit the task through CustomFutureTask and return the future
-        CustomFutureTask ftask = new CustomFutureTask(task);
-        this.execute(ftask);
-        return ftask;
+
+        // submit the task through CustomFutureTask and return the future
+        CustomFutureTask<T> customFutureTask = new CustomFutureTask<>(task);
+        this.execute(customFutureTask);
+
+        return customFutureTask;
     }
 @Override
     public <T> Future<T> submit(Callable<T> callable) {

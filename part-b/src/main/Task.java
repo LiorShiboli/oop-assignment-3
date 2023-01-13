@@ -46,7 +46,7 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
      * @param callable a callable to run
      */
     public Task(Callable<T> callable) {
-        this(callable, TaskType.def);
+        this(callable, TaskType.DEFAULT);
     }
 
     /**
@@ -71,10 +71,6 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
         this.priority = priority;
     }
 
-    public static int CompareToDefault(Task task) {
-        return Integer.compare(task.getPriority(), TaskType.def.getPriority());
-    }
-
     public int getPriority() {
         return priority;
     }
@@ -88,6 +84,10 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     @Override
     public int compareTo(Task other) {
         return Integer.compare(this.getPriority(), other.getPriority());
+    }
+
+    public int compareToDefault() {
+        return Integer.compare(this.getPriority(), TaskType.DEFAULT.getPriority());
     }
 
     @Override
