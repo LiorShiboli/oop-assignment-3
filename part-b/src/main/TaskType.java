@@ -22,7 +22,8 @@ public enum TaskType {
 
     static public final int MIN_PRIORITY = 1;
     static public final int MAX_PRIORITY = 10;
-
+    //the default type of an uknown task
+    static public final TaskType def = OTHER;
     // Members
     private final int priority;
 

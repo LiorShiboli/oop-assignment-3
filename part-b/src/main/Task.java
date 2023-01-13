@@ -39,10 +39,6 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
      */
     private final int priority;
 
-    /**
-     * the CustomExecutor of the task
-     */
-    private CustomExecutor executor;
 
     /**
      * Create new Task from callable
@@ -50,7 +46,7 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
      * @param callable a callable to run
      */
     public Task(Callable<T> callable) {
-        this(callable, TaskType.OTHER);
+        this(callable, TaskType.def);
     }
 
     /**
@@ -62,7 +58,6 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     public Task(Callable<T> callable, TaskType taskType) {
         this.callable = callable;
         this.priority = taskType.getPriority();
-        this.executor = null;
     }
 
     /**
@@ -74,7 +69,10 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     public Task(Callable<T> callable, int priority) {
         this.callable = callable;
         this.priority = priority;
-        this.executor = null;
+    }
+
+    public static int CompareToDefault(Task task) {
+        return Integer.compare(task.getPriority(), TaskType.def.getPriority());
     }
 
     public int getPriority() {
@@ -85,23 +83,7 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
      * Return if the task in an Executor
      * @return true if the task in an Executor
      */
-    public boolean inExecutor() {
-        return this.executor != null;
-    }
 
-    /**
-     * Set Executor for the task. Used by the CustomExecutor
-     *
-     * @param executor a CustomExecutor
-     * @throws RuntimeException if already has CustomExecutor
-     */
-    public void setExecutor(CustomExecutor executor) {
-        if (inExecutor()) {
-            throw new RuntimeException("Is already in executor");
-        }
-
-        this.executor = executor;
-    }
 
     @Override
     public int compareTo(Task other) {

@@ -9,7 +9,7 @@ public class CustomExecutor extends ThreadPoolExecutor{
     public CustomExecutor() {
         super(
             Runtime.getRuntime().availableProcessors() /2, Runtime.getRuntime().availableProcessors() -1,
-            300,TimeUnit.MILLISECONDS,new PriorityBlockingQueue());
+            300,TimeUnit.MILLISECONDS,new PriorityBlockingQueue<Runnable>(11,CustomFutureTask.COMP));
     }
 
     public int getCurrentMax() {
@@ -21,7 +21,7 @@ public class CustomExecutor extends ThreadPoolExecutor{
         if (task.getPriority()>this.CurrentMax){
             this.CurrentMax = task.getPriority();
         }
-        //submit the task through CustomFutureTask
+        //submit the task through CustomFutureTask and return the future
         CustomFutureTask ftask = new CustomFutureTask(task);
         this.execute(ftask);
         return ftask;
@@ -38,7 +38,7 @@ public class CustomExecutor extends ThreadPoolExecutor{
     public <T> Future<T> submit(Callable<T> callable, int priority) {
         return this.submit(Task.createTask(callable,priority));
     }
-
+ //according to instruction
     public void gracefullyTerminate() {
         this.shutdown();
     }
@@ -46,6 +46,7 @@ public class CustomExecutor extends ThreadPoolExecutor{
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);
+        //update queue
         if (this.getQueue().isEmpty()){
             this.CurrentMax = 0;
         }
