@@ -120,16 +120,7 @@ public class LinesCounter {
 
         long counter = 0;
 
-        int i = 0;
-
         for (String fileName: fileNames) {
-
-            if (i == 10000) {
-                i = 0;
-                System.out.println("print me");
-            } else {
-                i++;
-            }
 
             try {
                 counter += getCountOfLinesInFile(fileName);

@@ -9,9 +9,26 @@ This is assignment project for the university
 
 ## Get Started
 
-Open
+Open the project workspace with IDEA, and run "Part A" and 'Part B'
 
-## Part B
+## Part A Results
+
+- 10K files with at max 1K lines. 2510K in total:
+  - getNumOfLines take 205 [ms]
+  - getNumOfLinesThreads take 424 [ms]
+  - getNumOfLinesThreadPool take 1641 [ms]
+
+- 1K files with at max 10K lines. 6251K in total:
+    - getNumOfLines take 408 [ms]
+    - getNumOfLinesThreads take 134 [ms]
+    - getNumOfLinesThreadPool take 172 [ms]
+
+- 10K files with at max 10K lines. 62510K in total:
+    - getNumOfLines take 8514 [ms]
+    - getNumOfLinesThreads take 2059 [ms]
+    - getNumOfLinesThreadPool take 3290 [ms]ss
+
+## Summary on Part B
 ![](package.png)
 the core idea of our design is like that, task acts as a normal callable
 but has an additional property which is being able to be compared,
