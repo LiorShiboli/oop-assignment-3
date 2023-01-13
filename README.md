@@ -29,7 +29,7 @@ Open the project workspace with IDEA, and run "Part A" and 'Part B'
     - getNumOfLinesThreadPool take 3290 [ms]ss
 
 ## Summary on Part B
-![](package.png)
+![](part-b-diagram.png)
 the core idea of our design is like that, task acts as a normal callable
 but has an additional property which is being able to be compared,
 custom executor is an extension of threadpool executor which instead
@@ -48,7 +48,7 @@ liskov substitution because we wanted a class that acted like threadpool executo
 
 we also often used constructor chaining to ensure less duplicated code and in case of a change,less changes to make
 for the same reason and for insuring single responsibility we delegated all our comparations to Task,so if anyone wants to change or know or change how the comparations work he only needs to look in task,
-that is unless he wants to know how the comparations work with runnables which arent of the class custom future. that is because custom future is our adapter which bridges the difference between runnable future/runnables which our thread executes,and task which has a type and order
+that is unless he wants to know how the comparations work with runnables which arent of the class custom future. that is because custom future is our adapter which bridges the difference between runnable future/runnables which our thread executes,and task which has a type and thus order
 
 
 ## Authors

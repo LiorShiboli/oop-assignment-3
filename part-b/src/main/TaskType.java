@@ -42,6 +42,19 @@ public enum TaskType {
         }
     }
 
+    public static TaskType priorityType(int priority) {
+        switch(priority) {
+            case 1:
+                return COMPUTATIONAL;
+            case 2:
+                return IO;
+            case 3:
+                return OTHER;
+            default:
+                return DEFAULT;
+        }
+    }
+
     public int getPriority() {
         return priority;
     }

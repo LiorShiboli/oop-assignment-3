@@ -37,7 +37,7 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
     /**
      * The priority of the task
      */
-    private final int priority;
+    public final TaskType taskType;
 
 
     /**
@@ -57,7 +57,7 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
      */
     public Task(Callable<T> callable, TaskType taskType) {
         this.callable = callable;
-        this.priority = taskType.getPriority();
+        this.taskType = taskType;
     }
 
     /**
@@ -68,11 +68,11 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
      */
     public Task(Callable<T> callable, int priority) {
         this.callable = callable;
-        this.priority = priority;
+        this.taskType = (TaskType.priorityType( priority));
     }
 
     public int getPriority() {
-        return priority;
+        return taskType.getPriority();
     }
 
     @Override
