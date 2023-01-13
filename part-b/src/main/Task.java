@@ -75,15 +75,16 @@ public class Task<T> implements Callable<T>, Comparable<Task<?>> {
         return priority;
     }
 
-    /**
-     * Return if the task in an Executor
-     * @return int 1 if the task in an Executor
-     */
     @Override
     public int compareTo(Task other) {
         return Integer.compare(this.getPriority(), other.getPriority());
     }
 
+    /**
+     * compare the task to Default Task Type
+     *
+     * @return int
+     */
     public int compareToDefault() {
         return Integer.compare(this.getPriority(), TaskType.DEFAULT.getPriority());
     }

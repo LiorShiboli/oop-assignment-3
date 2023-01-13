@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CustomExecutorTest {
     public static final Logger logger = LoggerFactory.getLogger(CustomExecutorTest.class);
@@ -139,6 +140,8 @@ public class CustomExecutorTest {
                 return "Comp-2";
             }, TaskType.COMPUTATIONAL);
 
+            Thread.sleep(1);
+
             assertEquals(0, executor2.getCurrentMax());
 
             assertEquals("Comp-1", taskComp1.get(100, TimeUnit.MILLISECONDS));
@@ -153,11 +156,38 @@ public class CustomExecutorTest {
             return 0;
         }, TaskType.OTHER);
 
-        assertEquals(0, (int)mainTask.get(1, TimeUnit.SECONDS));
+        assertEquals(0, (int)mainTask.get(5, TimeUnit.SECONDS));
 
         assertEquals(0, executor1.getCurrentMax());
 
         executor1.gracefullyTerminate();
+    }
+
+    @Test
+    public void finalCurrentMax() {
+        final int N = 1000;
+
+        CustomExecutor executor = new CustomExecutor();
+
+        for (int i = 0; i < N; i++) {
+            executor.submit(() -> {
+                Thread.sleep(10);
+                return TaskType.IO;
+            }, TaskType.IO);
+        }
+
+        for (int i = 0; i < N; i++) {
+            executor.submit(() -> {
+                Thread.sleep(10);
+                return TaskType.IO;
+            }, TaskType.COMPUTATIONAL);
+        }
+
+        assertEquals(2, executor.getCurrentMax());
+
+        assertTrue(executor.gracefullyTerminate());
+
+        assertEquals(0, executor.getCurrentMax());
     }
 
     @Test

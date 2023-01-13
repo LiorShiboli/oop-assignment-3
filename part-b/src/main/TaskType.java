@@ -22,6 +22,10 @@ public enum TaskType {
 
     static public final int MIN_PRIORITY = 1;
     static public final int MAX_PRIORITY = 10;
+
+    /**
+     * A default priority for threads that not a Task
+     */
     static public final TaskType DEFAULT = TaskType.OTHER;
     // Members
     private final int priority;
